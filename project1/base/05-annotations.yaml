@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: annotations                  # Pod name
+  labels:                            # Key-value pairs used for selection/grouping
+    project: roboshop
+    component: mysql
+    tier: backend
+    environment: dev
+  annotations:                       # Key-value metadata for tools/automation
+    description: "This pod is created to demonstrate pod annotations"
+    jenkins: "https://jenkins.com/build/job/roboshop-catalouge/3"
+spec:
+  containers:
+  - name: nginx                      # Container name
+    image: nginx                     # Using the official Nginx image
+    ports:
+    - containerPort: 80              # Exposing port 80
+    resources:                       # Resource requests and limits
+      requests:
+        memory: "64Mi"
+        cpu: "250m"
+      limits:
+        memory: "128Mi"
+        cpu: "500m"

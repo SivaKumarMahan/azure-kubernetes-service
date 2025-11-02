@@ -1,0 +1,24 @@
+resources:
+  - 01-namespace.yaml
+  - 02-pod.yaml
+  - 03-multi-container.yaml
+  - 04-labels.yaml
+  - 05-annotations.yaml
+  - 06-resources.yaml
+  - 07-env.yaml
+  - 08-config-map.yaml
+  - 09-pod-config.yaml
+  - 10-secret.yaml
+  - 11-pod-secret.yaml
+  - 12-service.yaml
+  - 13-service-np.yaml
+  - 14-service-lb.yaml
+  - 15-replicaset.yaml
+  - 16-deployment.yaml
+  - 17-statefulset.yaml
+  - 18-daemonset.yaml
+  - 19-live-readiness.yaml
+  - 20-network-policy.yaml
+
+
+# kubectl apply -k base/

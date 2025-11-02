@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mypod                      # The name of the Pod
+  namespace: demo-namespace          # Specifies the namespace for the Pod
+  labels:
+    app.kubernetes.io/name: myapp   # Label for identification or selection
+spec:
+  containers:
+  - name: nginx                     # Container name
+    image: nginx:latest             # Image pulled from Docker Hub
+    resources:
+      requests:
+        memory: "64Mi"              # Minimum memory request (64 MiB)
+        cpu: "250m"                 # Quarter of a CPU core
+      limits:
+        memory: "128Mi"             # Memory limit (128 MiB)
+        cpu: "500m"                 # Half a CPU core
+    ports:
+      - containerPort: 80           # Exposes port 80 inside the container
+
