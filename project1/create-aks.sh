@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Variables
-RESOURCE_GROUP="aimsplus"
+RESOURCE_GROUP="test-rg"
 LOCATION="centralindia"
 AKS_NAME="aksdemo18"
 
@@ -21,7 +21,7 @@ az aks get-credentials --resource-group $RESOURCE_GROUP --name $AKS_NAME
 # Verify
 kubectl get nodes
 
-az aks get-credentials --resource-group aimsplus --name aksdemo18 --overwrite-existing
+az aks get-credentials --resource-group test-rg --name aksdemo18 --overwrite-existing
 
 kubectl config current-context
 
