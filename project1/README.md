@@ -242,3 +242,51 @@ Purpose: Used for stateful applications (like databases or services that need st
 Added initcontainers in spec of statefulset
 Now open http://<EXTERNAL-IP> — you should see:
 Hello from Pod 0
+
+# 19-liveness-readiness.yaml
+```bash
+kubectl apply -f 19-liveness-readiness.yaml
+kubectl get pods
+kubectl exec -it live-readiness -- rm -rf /usr/share/nginx/html/index.html
+
+```
+Liveness probe:
+Initial delay: 30 seconds
+Period: Every 10 seconds
+If the container doesn’t respond with HTTP 200 within 1 second, it’s considered unhealthy.
+Kubernetes will restart the container if it fails the liveness check.
+
+Readiness probe:
+Initial delay: 40 seconds
+Period: Every 3 seconds
+Determines when the container is ready to accept traffic.
+If the container doesn’t respond with HTTP 200 within 1 second, it’s considered not ready.
+Kubernetes will stop sending traffic to the pod until it passes the readiness check.  
+
+# 20-network-policy.yaml
+```bash
+kubectl apply -f 20-network-policy.yaml
+kubectl get networkpolicy
+```
+Deploy Simple Test Pods
+kubectl run frontend --image=busybox --labels="role=frontend" --restart=Never -- sleep 3600
+kubectl run backend --image=nginx --labels="role=backend" --port=80 --restart=Never
+
+Create a Service for the backend
+kubectl expose pod backend --port=80 --target-port=80 --name=backend
+Test Connectivity
+From frontend to backend (should succeed):
+```bash
+kubectl exec -it frontend -- wget --spider http://backend
+Connecting to backend (10.0.188.36:80)
+remote file exists
+```
+
+From another pod without role=frontend (should fail):
+```bash
+kubectl run testpod --image=busybox --restart=Never -- sleep 3600
+kubectl exec -it testpod -- wget --spider http://backend
+```
+
+Make sure below settings are there while creating AKS cluster
+network-plugin: azure network-policy: calico 
