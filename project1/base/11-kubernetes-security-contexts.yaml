@@ -1,0 +1,33 @@
+# This Kubernetes Pod manifest demonstrates the use of security contexts at both the Pod and container levels.
+# It configures various security settings to enhance the security posture of the Pod and its container.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: security-context-pod  
+spec:
+  securityContext:
+    runAsUser: 1000     # Runs all processes as Linux user with UID 1000 (non-root).
+    runAsGroup: 3000    # Sets the primary group ID to 3000 for processes in the container.
+    fsGroup: 2000       # Files mounted in the container get group ownership of 2000 — useful for shared storage volumes (e.g., Azure Files or NFS).
+  containers:
+  - name: security-context-container
+    image: nginx
+    ports:
+    - containerPort: 80
+    securityContext:
+      allowPrivilegeEscalation: false    # Prevents the container from gaining higher privileges via setuid binaries.
+      capabilities:                      # Removes all Linux kernel capabilities (e.g., NET_ADMIN, SYS_TIME).
+        drop:
+        - ALL
+      readOnlyRootFilesystem: true       # Ensures the container's root filesystem is read-only, enhancing security by preventing modifications.
+      runAsNonRoot: true                 # Ensures the container runs as a non-root user.
+      privileged: false                  # Ensures the container does not run in privileged mode.
+      seccompProfile:                    # Enables the default Seccomp profile that restricts dangerous syscalls — helps protect kernel.
+        type: RuntimeDefault
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+        requests:
+          memory: "64Mi"
+          cpu: "250m"

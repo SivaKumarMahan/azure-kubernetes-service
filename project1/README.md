@@ -290,3 +290,5 @@ kubectl exec -it testpod -- wget --spider http://backend
 
 Make sure below settings are there while creating AKS cluster
 network-plugin: azure network-policy: calico 
+
+# 11-
